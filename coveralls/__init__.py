@@ -70,7 +70,12 @@ def parse_args():
     yml = yml or {}
     args.repo_token = yml.get('repo_token', os.environ.get('COVERALLS_REPO_TOKEN', ''))
     args.service_name = yml.get('service_name', 'travis-ci')
-    args.service_job_id = os.environ.get('TRAVIS_JOB_ID', '')
+    if args.service_name in ('circleci', 'circle-ci'):
+        args.service_number = os.environ.get('CIRCLE_BUILD_NUM', '')
+        args.service_job_id = '.'.join([args.service_number, os.environ.get('CIRCLE_NODE_INDEX', '')])
+    else:
+        args.service_number = os.environ.get('TRAVIS_BUILD_NUMBER', '')
+        args.service_job_id = os.environ.get('TRAVIS_JOB_ID', '')
     args.parallel = yml.get('parallel', os.environ.get('COVERALLS_PARALLEL', False))
     return args
 
@@ -88,6 +93,7 @@ def wear(args=None):
     response = post(
         url=args.coveralls_url,
         repo_token=args.repo_token,
+        service_number=args.service_number,
         service_job_id=args.service_job_id,
         service_name=args.service_name,
         git=repo(args.base_dir) if not args.nogit else {},
