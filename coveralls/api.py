@@ -1,10 +1,13 @@
 import json
 from six import StringIO
 import requests
+import logging
 
 
 def post(url, repo_token, service_number, service_job_id, service_name, git, source_files, parallel):
     json_file = build_file(repo_token, service_number, service_job_id, service_name, git, source_files, parallel)
+    logger = logging.getLogger('coveralls')
+    logger.info("JSON payload: %s", json_file.getvalue())
     return requests.post(url, files={'json_file': json_file})
 
 

@@ -90,6 +90,7 @@ def wear(args=None):
     args = args or parse_args()
     coverage = coveralls(data_file=args.data_file, config_file=args.config_file)
     coverage.load()
+    logger.info("Submitting to coveralls.io: %r", args)
     response = post(
         url=args.coveralls_url,
         repo_token=args.repo_token,
