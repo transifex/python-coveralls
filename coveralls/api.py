@@ -3,13 +3,14 @@ from six import StringIO
 import requests
 
 
-def post(url, repo_token, service_job_id, service_name, git, source_files, parallel):
-    json_file = build_file(repo_token, service_job_id, service_name, git, source_files, parallel)
+def post(url, repo_token, service_number, service_job_id, service_name, git, source_files, parallel):
+    json_file = build_file(repo_token, service_number, service_job_id, service_name, git, source_files, parallel)
     return requests.post(url, files={'json_file': json_file})
 
 
-def build_file(repo_token, service_job_id, service_name, git, source_files, parallel):
+def build_file(repo_token, service_number, service_job_id, service_name, git, source_files, parallel):
     content = {
+        'service_number': service_number,
         'service_job_id': service_job_id,
         'service_name': service_name,
         'git': git,
