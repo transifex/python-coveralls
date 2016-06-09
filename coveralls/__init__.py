@@ -70,7 +70,7 @@ def parse_args():
     yml = yml or {}
     args.repo_token = yml.get('repo_token', os.environ.get('COVERALLS_REPO_TOKEN', ''))
     args.service_name = yml.get('service_name', 'travis-ci')
-    if args.service_name in ('circleci', 'circle-ci') or os.environ.get('TRAVIS', False):
+    if args.service_name in ('circleci', 'circle-ci', 'circle_ci'):
         args.service_number = os.environ.get('CIRCLE_BUILD_NUM', '')
         args.service_job_id = '.'.join([args.service_number, os.environ.get('CIRCLE_NODE_INDEX', '')])
     else:
